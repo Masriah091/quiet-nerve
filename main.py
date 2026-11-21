@@ -9,7 +9,7 @@ return. Declarative and concrete, no commands: it shows calm
 instead of instructing it.
 """
 
-import os
+from pathlib import Path
 
 TEXT = (
     "Evening is the day setting down its tools, one by one, without apology. "
@@ -18,14 +18,15 @@ TEXT = (
     "It is the work, trusting you to return."
 )
 
-OUTPUT_PATH = "/output/entry.txt"
+OUTPUT_PATH = Path("/output/entry.txt")
 
 
-def write_entry(path=OUTPUT_PATH):
-    directory = os.path.dirname(path)
-    if directory:
-        os.makedirs(directory, exist_ok=True)
-    with open(path, "w", encoding="utf-8", newline="") as handle:
+def write_entry(path: Path = OUTPUT_PATH) -> None:
+    """Write the entry text to ``path``, creating parent dirs if needed."""
+    parent = path.parent
+    if str(parent):
+        parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8", newline="") as handle:
         handle.write(TEXT)
 
 
